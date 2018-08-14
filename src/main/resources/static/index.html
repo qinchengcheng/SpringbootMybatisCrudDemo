@@ -230,7 +230,7 @@
 
     </div>
 
-    <div id="main" class="col-md-11">
+    <div id="main" class="col-md-11" style="overflow: auto">
 
         <div id="list-1" class="list-class" >
             <div id="search-job-div">
@@ -264,7 +264,7 @@
 
             <div id="" class="bottom-div">
                 <div id="" class="col-md-2 bottom-div-button-class">
-                    <button type="button" id="data-save-job-info" class="btn btn-success btn-sm" data-toggle="modal" data-target=".data-save-job-info">新增</button>
+                    <button type="button" id="btn-add" class="btn btn-success btn-sm" data-toggle="modal" data-target=".data-save-job-info">新增</button>
                 </div>
                 <div id="" class="col-md-3 col-md-offset-3">
                     <nav aria-label="Page navigation">
@@ -377,6 +377,7 @@
                     <tr>
                         <td class="detail-td-group"><b>员工姓名：</b>&nbsp;<span id="personName"></span></td>
                         <td class="detail-td-group"><b>员工性别：</b>&nbsp;<span id="personSex"></span></td>
+                        <td class="detail-td-group"><b>员工部门：</b>&nbsp;<span id="deptName"></span></td>
                     </tr>
 
                     <tr>
@@ -432,10 +433,18 @@
 
                         <tr>
                             <td class=""><b>员工 QQ：</b>&nbsp;<input id="save-personQq" placeholder="请输入员工QQ号码"/></td>
+                            <td class=""><b>选择部门：</b>&nbsp;
+                                <select name="" id="save-deptNo">
+
+                                </select>
+                            </td>
                         </tr>
 
                         <tr>
                             <td class="" colspan="3"><b>简单介绍：</b>&nbsp;<input id="save-personDesc" style="width:600px" placeholder="请输入简单介绍，注意少于128字"/></td>
+                        </tr>
+                        <tr>
+                            <td><div id="add_rst"></div></td>
                         </tr>
                     </table>
                 </div>
@@ -452,6 +461,69 @@
 
 
 
+
+<div class="modal fade data-modify-job-info" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="###">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" style="font-family: kaiti;"><b>修改信息</b></h4>
+                </div>
+                <div class="modal-body">
+                    <table id="detail-modify" class="table detail-save">
+
+                        <tr>
+                            <!--<td class=""><b>合作编号：</b>-->
+                            <!--<input id="save-busId" placeholder="请输入合作编号" />-->
+                            <!--<span class="glyphicon glyphicon-ok" aria-hidden="true" style="color: green; display: none;"></span>-->
+                            <!--<span class="glyphicon glyphicon-remove" aria-hidden="true" style="color: red; display: none;"></span>-->
+                            <!--</td>-->
+                            <!--<td class=""><b>合作商家：</b>&nbsp;<input id="foo-name" placeholder="合作商家" style="background-color: #fff;" disabled="disabled"/></td>-->
+
+                            <td class=""><b>员工名称：</b>&nbsp;<input id="modify-personName" placeholder="请输入员工名称"/></td>
+
+                            <td class=""><b>员工电话：</b>&nbsp;<input id="modify-personPhone" placeholder="请输入员工电话"/></td>
+                        </tr>
+
+                        <tr>
+                            <td class=""><b>员工邮箱：</b>&nbsp;<input id="modify-personEmail" placeholder="请输入员工邮箱" /></td>
+                            <td class=""><b>选择性别：</b>&nbsp;
+                                <select name="" id="modify-personSex">
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class=""><b>员工 QQ：</b>&nbsp;<input id="modify-personQq" placeholder="请输入员工QQ号码"/></td>
+                            <td class=""><b>选择部门：</b>&nbsp;
+                                <select name="" id="modify-deptNo">
+
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="" colspan="3"><b>简单介绍：</b>&nbsp;<input id="modify-personDesc" style="width:600px" placeholder="请输入简单介绍，注意少于128字"/></td>
+                        </tr>
+                        <tr>
+                            <td><div id="moify_rst"></div></td>
+                        </tr>
+                        <input id="modify-id"  type="hidden" value=""/>
+                    </table>
+                </div>
+
+                <div class="modal-footer" style="padding: 5px; text-align: center">
+                    <button type="button" id="modify-moify-person" class="btn btn-primary">确定</button>
+                    <button type="button" id="modify_close-apply" class="btn btn-danger" data-dismiss="modal">取消</button>
+                    <input id="data-modify-info-reset" type="reset" style="display: none">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 
 <div class="modal fade bs-example-modal-approve" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -530,7 +602,7 @@
             var params = {};
             params.payeeAccount = $("#search-payeeAccount").val();
             $.ajax({
-                url: "http://localhost:8011/person/list",
+                url: "http://10.14.21.38:8011/person/list",
                 dataType: "json",
 //                data:{"pageNo":pageNo,"totalCount":totalCount, "params":JSON.stringify(params)},
                 success: function(result) {
@@ -545,14 +617,15 @@
                             "<td>"+ data[i].personName +"</td>" +
                             "<td>"+ data[i].personSex +"</td>" +
                             "<td>"+ data[i].personPhone +"</td>" +
-                            "<td>"+ data[i].dept_no +"</td>" +
+                            "<td>"+ data[i].deptName +"</td>" +
                             "<td>"+ data[i].personEmail +"</td>" +
                             "<td>"+ data[i].personQq +"</td>" +
                             "<td>"+ data[i].personCreateTime +"</td>" +
-                            "<td data-index='"+i+"' style='text-align: left; padding-left: 10px; width: 100px;'><button class='btn btn-xs btn-success table-info-detail' data-index='"+i+"' data-target='.data-info' data-toggle='modal' title='双击行也能查看详情'>详情</button>&nbsp;&nbsp;<button class='btn btn-xs btn-danger table-info-del' data-toggle='modal' data-target='.bs-example-modal-del'>删除</button></td>" +
+                            "<td data-index='"+i+"' style='text-align: left; padding-left: 10px; width: 150px;'><button class='btn btn-xs btn-success table-info-detail' data-index='"+i+"' data-target='.data-info' data-toggle='modal' title='双击行也能查看详情'>详情</button>&nbsp;&nbsp;<button class='btn btn-xs btn-danger table-info-del' data-toggle='modal' data-target='.bs-example-modal-del'>删除</button>&nbsp;&nbsp;<button class='btn btn-xs btn-info table-info-del btn-modify' data-toggle='modal' data-target='.data-modify-job-info' data-id='"+data[i].id+"'>编辑</button></td>" +
                             "</tr>";
                     }
                     $("#table-job-info").html(str);
+                    bindModify();
 //                    pageNo = dataPage.pageNo;
 //                    totalPage = dataPage.totalPages;
 //                    totalCount = dataPage.totalCount;
@@ -611,7 +684,7 @@
             var params = {};
             params.payeeAccount = $("#search-payeeAccount").val();
             $.ajax({
-                url: "http://localhost:8011/job/log/list",
+                url: "http://10.14.21.38:8011/job/log/list",
                 dataType: "json",
                 success: function(result) {
                     console.log(result);
@@ -642,7 +715,7 @@
             var params = {};
             params.payeeAccount = $("#search-payeeAccount").val();
             $.ajax({
-                url: "http://localhost:8011/job/app/list",
+                url: "http://10.14.21.38:8011/job/app/list",
                 dataType: "json",
                 success: function(result) {
                     console.log(result);
@@ -727,14 +800,26 @@
 
         $("#confirm-del").click(function() {
             $.ajax({
-                url:"http://localhost:8011/person/del?id=" + delId,
+                url:"http://10.14.21.38:8011/person/del?id=" + delId,
                 success: function(data) {
                     $("#close-del").click();
                     searchPersonList();
                 }
             })
         });
-
+        $("#btn-add").click(function() {
+            $("#add_rst").html("");
+            $.ajax({
+                url:"http://10.14.21.38:8011/dept/list",
+                success: function(data) {
+                    var select= $("#save-deptNo");
+                    select.find("option").remove();
+                    for(var i = 0; i < data.length; i++) {
+                      select.append("<option value='"+data[i].deptNo+"'>"+data[i].deptName+"</option>");
+                    }
+                }
+            })
+        });
         $("#save-new-person").click(function() {
             var $_saveList = $("#detail-save").find("input, select");
             var obj = {};
@@ -748,19 +833,141 @@
 //            obj.amount = new Number(obj.amount * 100).toFixed();
 //            var payBillJson = JSON.stringify(obj);
             $.ajax({
-                url:"http://localhost:8011/person/add",
+                url:"http://10.14.21.38:8011/person/add",
                 type:"post",
                 data:obj,
                 success: function(data) {
-                    $("#close-apply").click();
+                    if(data.Result=="0")
+                    {
+                        $("#add_rst").html(data.Message);
+                    }
+                    else
+                    {
+                        $("#close-apply").click();
 //                    search();
-                    searchPersonList();
-                    $("#data-save-info-reset").click();
-                    $("#save-busId").parent().find(".glyphicon").hide();
+                        searchPersonList();
+                        $("#data-save-info-reset").click();
+                        $("#save-busId").parent().find(".glyphicon").hide();
+                    }
                 }
             })
         });
+        //点击编辑事件
+        function bindModify(){
+            $(".btn-modify").on("click",function () {
+                $("#moify_rst").html("");
+                var select=$("#modify-deptNo");
+                var id=$(this).attr("data-id");
+                select.find("option").remove();
+                $.ajax({
+                    url:"http://10.14.21.38:8011/dept/list",
+                    success: function(data) {
+                        for(var i = 0; i < data.length; i++) {
+                            select.append("<option value='"+data[i].deptNo+"'>"+data[i].deptName+"</option>");
+                        }
+                        $.ajax({
+                            url:"http://10.14.21.38:8011/person/getOne?id=" + id,
+                            success: function(dataDetail) {
+                                $("#modify-id").val(dataDetail.id);
+                                $("#modify-personName").val(dataDetail.personName);
+                                $("#modify-personPhone").val(dataDetail.personPhone);
+                                $("#modify-personEmail").val(dataDetail.personEmail);
+                                $("#modify-personSex").children("option").each(function(){
+                                    var temp=$(this).val();
+                                    if(temp==dataDetail.personSex)
+                                    {
+                                        $(this).attr("selected","selected");
+                                    }
+                                });
+                                $("#modify-personQq").val(dataDetail.personQq);
+                                $("#modify-deptNo").children("option").each(function(){
+                                    var temp=$(this).val();
+                                    if(temp==dataDetail.deptNo)
+                                    {
+                                        $(this).attr("selected","selected");
+                                    }
+                                });
+                                $("#modify-personDesc").val(dataDetail.personDesc);
+                                modifySave();
+                            }
+                        })
+                    }
+                })
+            });
+        }
+//修改保存事件
+        function modifySave(){
+            $("#modify-moify-person").click(function() {
+                var $_saveList = $("#detail-modify").find("input, select");
+                var obj = {};
+//            var parStr = "";
+                for(var i = 0; i < $_saveList.size(); i++) {
+                    var key = ($_saveList.eq(i).attr("id") + "").replace("modify-","");
+                    var value = $_saveList.eq(i).val();
+                    obj[key] = value;
+                }
+                console.log(obj);
+//            obj.amount = new Number(obj.amount * 100).toFixed();
+//            var payBillJson = JSON.stringify(obj);
+                $.ajax({
+                    url:"http://10.14.21.38:8011/person/update",
+                    type:"post",
+                    data:obj,
+                    success: function(data) {
+                        if(data.Result=="0")
+                        {
+                            $("#moify_rst").html(data.Message);
+                            modifySave();
+                        }
+                        else
+                        {
+                            $("#modify_close-apply").click();
+//                    search();
+                            searchPersonList();
+                        }
+                    }
+                })
+            });
+        }
+      $(".btn-modify").on("click",function () {
+          $("#moify_rst").html();
+          var id=$(this).attr("data-id");
 
+          $.ajax({
+              url:"http://10.14.21.38:8011/dept/list",
+              success: function(data) {
+                  for(var i = 0; i < data.length; i++) {
+                      var select=$("#modify-deptNo");
+                      select.append("<option value='"+data[i].deptNo+"'>"+data[i].deptName+"</option>");
+                  }
+                  $.ajax({
+                      url:"http://10.14.21.38:8011/person/getOne?id=" + id,
+                      success: function(dataDetail) {
+                              $("#modify-id").val(data.id);
+                              $("#modify-personName").val(data.personName);
+                              $("#modify-personPhone").val(data.personPhone);
+                              $("#modify-personEmail").val(data.personEmail);
+                          $("#modify-personSex").childeren("option").each(function(){
+                              var temp=$(this).val();
+                              if(temp==data.personSex)
+                              {
+                                  $(this).attr("selected","selected");
+                              }
+                          });
+                              $("#modify-personQq").val(data.personQq);
+                          $("#modify-deptNo").childeren("option").each(function(){
+                              var temp=$(this).val();
+                              if(temp==data.deptNo)
+                              {
+                                  $(this).attr("selected","selected");
+                              }
+                          });
+                              $("#modify-personDesc").val(data.personDesc);
+                      }
+                  })
+              }
+          })
+      });
         $("#save-busId").blur(function() {
             var id  = $(this).val();
             var _this = $(this);

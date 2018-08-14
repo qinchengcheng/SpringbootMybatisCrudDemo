@@ -45,9 +45,9 @@ public class DataSourceConfig {
 		// 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0
 		boneCPDataSource.setIdleMaxAgeInMinutes(30);
 		// 每个分区最大的连接数
-		boneCPDataSource.setMaxConnectionsPerPartition(100);
+		boneCPDataSource.setMaxConnectionsPerPartition(1);
 		// 每个分区最小的连接数
-		boneCPDataSource.setMinConnectionsPerPartition(5);
+		boneCPDataSource.setMinConnectionsPerPartition(1);
 		return boneCPDataSource;
 	}
 }

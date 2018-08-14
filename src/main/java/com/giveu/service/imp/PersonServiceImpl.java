@@ -2,6 +2,7 @@ package com.giveu.service.imp;
 
 import com.giveu.dao.PersonDAO;
 import com.giveu.entity.Person;
+import com.giveu.responEntity.ResponPerson;
 import com.giveu.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class PersonServiceImpl implements PersonService {
 	PersonDAO personDAO;
 
 	@Override
-	public List<Person> list() {
+	public List<ResponPerson> list() {
 		return personDAO.list();
 	}
 
@@ -32,4 +33,10 @@ public class PersonServiceImpl implements PersonService {
 	public Integer del(Integer id) {
 		return personDAO.del(id);
 	}
+	@Override
+	public Integer update(Person person) {
+		return personDAO.update(person);
+	}
+	@Override
+	public ResponPerson getPerson(Integer id){return personDAO.getPersonById(id);}
 }
