@@ -45,7 +45,10 @@ public class PersonController {
 		if(map!=null && map.size()>0)
 		{
 			for (Object value : map.values()) {
-				errorMsg=value.toString()+"、"+errorMsg;
+				errorMsg=errorMsg+"、"+ value.toString();
+			}
+			if (errorMsg.startsWith("、")) {
+				errorMsg = errorMsg.substring(1);
 			}
 			msg.Message=errorMsg;
 			msg.Result="0";
@@ -79,7 +82,10 @@ public class PersonController {
 		if(map!=null && map.size()>0)
 		{
 			for (Object value : map.values()) {
-				errorMsg=value.toString()+"、"+errorMsg;
+				errorMsg=errorMsg+"、"+ value.toString();
+			}
+			if (errorMsg.startsWith("、")) {
+				errorMsg = errorMsg.substring(1);
 			}
 			msg.Message=errorMsg;
 			msg.Result="0";

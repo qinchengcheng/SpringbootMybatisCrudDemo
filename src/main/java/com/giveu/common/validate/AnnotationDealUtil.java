@@ -192,7 +192,7 @@ public class AnnotationDealUtil {
     }
 
     /**
-     * QQ邮箱
+     * QQ
      *
      * @author zhy
      * @param value 参数值
@@ -203,7 +203,7 @@ public class AnnotationDealUtil {
         /**
          * 正则表达式：验证邮箱
          */
-        String qqRegex = "^\\d{5,12}@[qQ][qQ]\\.(com|cn)$";
+        String qqRegex = "^[1-9][0-9]{4,14}$";
         Map<String, Object> validateResult = new HashMap<String, Object>();
         Qq annotation = field.getAnnotation(Qq.class);
         if(value==null||value.toString().isEmpty())
